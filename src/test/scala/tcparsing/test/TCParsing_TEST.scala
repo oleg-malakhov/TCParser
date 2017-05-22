@@ -10,11 +10,10 @@ class TCParsing_TEST extends FunSuite with ShouldMatchers {
     val p = TCParser.fromFile("TCHS71_1")
     val exp = """package topcoder.test
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FunSuite, Matchers}
 import topcoder.TCHS71_1.maxLength
 
-class TCHS71_1_TEST extends FunSuite with ShouldMatchers {
+class TCHS71_1_TEST extends FunSuite with Matchers {
 
   test("Case 0") { maxLength("AGGCA") should equal (1) }
 
@@ -31,11 +30,10 @@ class TCHS71_1_TEST extends FunSuite with ShouldMatchers {
     val p = TCParser.fromFile("TCHS71_2")
     val exp = """package topcoder.test
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FunSuite, Matchers}
 import topcoder.TCHS71_2.reducedFraction
 
-class TCHS71_2_TEST extends FunSuite with ShouldMatchers {
+class TCHS71_2_TEST extends FunSuite with Matchers {
 
   test("Case 0") { reducedFraction(16, 64) should equal ("1/4") }
 
@@ -59,11 +57,10 @@ class TCHS71_2_TEST extends FunSuite with ShouldMatchers {
     val p = TCParser.fromFile("TCHS71_3")
     val exp = """package topcoder.test
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FunSuite, Matchers}
 import topcoder.TCHS71_3.pathOutside
 
-class TCHS71_3_TEST extends FunSuite with ShouldMatchers {
+class TCHS71_3_TEST extends FunSuite with Matchers {
 
   test("Case 0") { pathOutside(
     Array("1..0",
@@ -121,27 +118,26 @@ class TCHS71_3_TEST extends FunSuite with ShouldMatchers {
     val exp =
 """package topcoder.test
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FunSuite, Matchers}
 import topcoder.TCHS1_1.averageSpeed
 
-class TCHS1_1_TEST extends FunSuite with ShouldMatchers {
+class TCHS1_1_TEST extends FunSuite with Matchers {
 
   test("Case 0") { averageSpeed(1, 50,
     Array(45, 40, 50)
-    ) should be (45.0 plusOrMinus 1E-9) }
+    ) shouldBe (45.0 +- 1E-9) }
 
   test("Case 1") { averageSpeed(1, 50,
     Array(42,43,44,45,46,47,48,49,50,51)
-    ) should be (46.0 plusOrMinus 1E-9) }
+    ) shouldBe (46.0 +- 1E-9) }
 
   test("Case 2") { averageSpeed(1, 50,
     Array(42,46,48,50,52)
-    ) should be (0.0 plusOrMinus 1E-9) }
+    ) shouldBe (0.0 +- 1E-9) }
 
   test("Case 3") { averageSpeed(20, 60,
     Array(25,45,45,43,24,9,51,55,60,34,61,23,40,40,47,49,33,23,47,54,54)
-    ) should be (41.68421052631579 plusOrMinus 1E-9) }
+    ) shouldBe (41.68421052631579 +- 1E-9) }
 
 }"""
     p.composeTests should equal (exp)
@@ -151,26 +147,25 @@ class TCHS1_1_TEST extends FunSuite with ShouldMatchers {
     val p = TCParser.fromFile("TCHS1_2")
     val exp = """package topcoder.test
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FunSuite, Matchers}
 import topcoder.TCHS1_2.language
 
-class TCHS1_2_TEST extends FunSuite with ShouldMatchers {
+class TCHS1_2_TEST extends FunSuite with Matchers {
 
   test("Case 0") { language(
     Array("a30b30c40","a20b40c40"),
     Array("aa bbbb cccc")
-    ) should be (0.0 plusOrMinus 1E-9) }
+    ) shouldBe (0.0 +- 1E-9) }
 
   test("Case 1") { language(
     Array("a30b30c40","a20b40c40"),
     Array("aaa bbbb ccc")
-    ) should be (2.0 plusOrMinus 1E-9) }
+    ) shouldBe (2.0 +- 1E-9) }
 
   test("Case 2") { language(
     Array("a10b10c10d10e10f50"),
     Array("abcde g")
-    ) should be (10.8 plusOrMinus 1E-9) }
+    ) shouldBe (10.8 +- 1E-9) }
 
   test("Case 3") { language(
     Array("a09b01c03d05e20g01h01i08l06n08o06r07s09t08u07x01"
@@ -178,7 +173,7 @@ class TCHS1_2_TEST extends FunSuite with ShouldMatchers {
     Array("this text is in english" 
          ,"the letter counts should be close to"
          ,"that in the table")
-    ) should be (130.6578 plusOrMinus 1E-9) }
+    ) shouldBe (130.6578 +- 1E-9) }
 
   test("Case 4") { language(
     Array("a09b01c03d05e20g01h01i08l06n08o06r07s09t08u07x01"
@@ -186,7 +181,7 @@ class TCHS1_2_TEST extends FunSuite with ShouldMatchers {
     Array("en esta es una oracion en castellano"
          ,"las ocurrencias de cada letra"
          ,"deberian ser cercanas a las dadas en la tabla")
-    ) should be (114.9472 plusOrMinus 1E-9) }
+    ) shouldBe (114.9472 +- 1E-9) }
 
   test("Case 5") { language(
     Array("z99y01", "z99y01", "z99y01", "z99y01", "z99y01", 
@@ -201,7 +196,7 @@ class TCHS1_2_TEST extends FunSuite with ShouldMatchers {
           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-    ) should be (495050.0 plusOrMinus 1E-9) }
+    ) shouldBe (495050.0 +- 1E-9) }
 
 }"""
     p.composeTests should equal (exp)
@@ -211,11 +206,10 @@ class TCHS1_2_TEST extends FunSuite with ShouldMatchers {
     val p = TCParser.fromFile("TCHS1_3")
     val exp = """package topcoder.test
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FunSuite, Matchers}
 import topcoder.TCHS1_3.limeLiters
 
-class TCHS1_3_TEST extends FunSuite with ShouldMatchers {
+class TCHS1_3_TEST extends FunSuite with Matchers {
 
   test("Case 0") { limeLiters(
     Array("##..#"
@@ -263,11 +257,10 @@ class TCHS1_3_TEST extends FunSuite with ShouldMatchers {
     val p = TCParser.fromFile("TCHS52_2")
     val exp = """package topcoder.test
                 |
-                |import org.scalatest.FunSuite
-                |import org.scalatest.matchers.ShouldMatchers
+                |import org.scalatest.{FunSuite, Matchers}
                 |import topcoder.TCHS52_2.terminalTimes
                 |
-                |class TCHS52_2_TEST extends FunSuite with ShouldMatchers {
+                |class TCHS52_2_TEST extends FunSuite with Matchers {
                 |
                 |  test("Case 0") { terminalTimes(
                 |    Array(2, 1, 2, 4)
@@ -296,11 +289,10 @@ class TCHS1_3_TEST extends FunSuite with ShouldMatchers {
     val p = TCParser.fromFile("TCHS52_2_b")
     val exp = """package topcoder.test
                 |
-                |import org.scalatest.FunSuite
-                |import org.scalatest.matchers.ShouldMatchers
+                |import org.scalatest.{FunSuite, Matchers}
                 |import topcoder.TCHS52_2_b.terminalTimes
                 |
-                |class TCHS52_2_b_TEST extends FunSuite with ShouldMatchers {
+                |class TCHS52_2_b_TEST extends FunSuite with Matchers {
                 |
                 |  test("Case 0") { terminalTimes(
                 |    Array(1234567890L, 1, 1234567890123L, 4)

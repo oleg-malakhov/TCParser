@@ -12,6 +12,8 @@ class TCParser(input                   : List[String],
                includeProblemStatement : Boolean       = false
               ) {
   private val pairs = input.sliding(2).toList
+  private val separator = System.getProperty("line.separator")
+  
   private def getVal(s: String) = pairs.find(_.head == s).get(1)
   val method = getVal("Method:")
   val (argTypes, argNames) = {
@@ -44,11 +46,10 @@ class TCParser(input                   : List[String],
 
     lb += "package " + testPackageName
     lb += ""
-    lb += "import org.scalatest.FunSuite"
-    lb += "import org.scalatest.matchers.ShouldMatchers"
+    lb += "import org.scalatest.{FunSuite, Matchers}"
     lb += "import " + codePackageName + "." + inputName + (if(language == "scala") "." + method else "")
     lb += ""
-    lb += "class " + testClassName + " extends FunSuite with ShouldMatchers {"
+    lb += "class " + testClassName + " extends FunSuite with Matchers {"
     if (language == "java"){
       lb += ""
       lb += "  val I = new " + inputName
@@ -60,15 +61,15 @@ class TCParser(input                   : List[String],
         n = x(0).init.toInt
         args = parseArgs(x)
         result = parseResults(x)
-        optnl = if(args.contains("Array(")) "\r\n    " else ""
-        (eqText, tolText) = if(tolerance.isEmpty) ("equal", "") 
-                                             else ("be", " plusOrMinus " + tolerance.get)
-      } yield "  test(\"Case "+n+"\") { "+instance + method+"("+args + optnl+") should "+eqText+
-        " ("+result + tolText+") }\r\n"
+        optnl = if(args.contains("Array(")) s"$separator    " else ""
+        (eqText, tolText) = if(tolerance.isEmpty) ("should equal", "")
+                                             else ("shouldBe", " +- " + tolerance.get)
+      } yield "  test(\"Case "+n+"\") { "+instance + method+"("+args + optnl+") "+eqText+
+        " ("+result + tolText+s") }$separator"
     }
     lb += "}"
 
-    lb.mkString("\r\n")
+    lb.mkString(s"$separator")
   }
   // parse results after "Returns"
   def parseResults(x: List[String]) = {
@@ -81,7 +82,7 @@ class TCParser(input                   : List[String],
     // for cases where result is an Array displayed over multiple subsequent lines:
     else {
       val (a,b) = x.dropWhile(! _.startsWith("Returns: ")).drop(1).span(!_.endsWith("}"))
-      val arrres = "\r\n    " + (a :+ b.head).mkString("\r\n         ").withScalaArrays
+      val arrres = s"$separator    " + (a :+ b.head).mkString(s"$separator         ").withScalaArrays
       if (returnType == "Array[Long]") longsAddL(arrres)
       else arrres
     }
@@ -99,8 +100,8 @@ class TCParser(input                   : List[String],
         val isLongType = Seq("Array[Long]", "Long") contains argTypes(argNumber)
         if (y.head startsWith "Array(") {
           val(s1, s2) = y span {! _.endsWith(")")}
-          val pre = if(acc == "") "\r\n    " else ",\r\n    "
-          val t = (s1 :+ s2.head).mkString("\r\n         ")
+          val pre = if(acc == "") s"$separator    " else s",$separator    "
+          val t = (s1 :+ s2.head).mkString(s"$separator         ")
           val tL = if (isLongType) longsAddL(t) else t
           join(s2.tail, argNumber + 1, acc + pre + tL)
         }
@@ -129,8 +130,8 @@ class TCParser(input                   : List[String],
     lb += "package " + codePackageName
     lb += ""
     lb += "object " + inputName + " {"
-    lb += "  def " + method + ((argNames, argTypes).zipped.map(_ + ": " + _).
-          mkString("(", ", ", ")")) + returnTypeString + " = {"
+    lb += "  def " + method + (argNames, argTypes).zipped.map(_ + ": " + _).
+      mkString("(", ", ", ")") + returnTypeString + " = {"
     lb += "    "
     lb += "  }"
     lb += "}"
@@ -141,7 +142,7 @@ class TCParser(input                   : List[String],
       lb += "*/"
     }
     
-    lb.mkString("\r\n")
+    lb.mkString(s"$separator")
   }
   
   def composeCodeTemplateJava = {
@@ -162,7 +163,7 @@ class TCParser(input                   : List[String],
       lb += "*/"
     }
     
-    lb.mkString("\r\n")    
+    lb.mkString(s"$separator")
   }
 
   def translateType(s: String): String = {
